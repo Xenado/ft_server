@@ -6,7 +6,7 @@
 #    By: user42 <jocaille@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/08 19:55:10 by user42            #+#    #+#              #
-#    Updated: 2020/09/13 15:45:00 by user42           ###   ########.fr        #
+#    Updated: 2020/09/13 16:28:08 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,14 +24,14 @@ RUN apt-get install -y 	wget \
 						php7.3 php7.3-fpm php7.3-mysql
 
 # Generate SSL
-RUN mkdir -p /etc/nginx/ssl
-	&& openssl	req -X509 \
-				-nodes \
-				-days 365 \
-				-newkey rsa:2048 \
-				-out /etc/nginx/ssl/site.crt \
-				-keyout /etc/nginx/ssl/site.key \
-				-subj "/C=FR/ST=Paris/0=42 School/OU=jocaille/CN=site"
+RUN mkdir -p /etc/nginx/ssl \
+	&& openssl req	-x509 \
+					-nodes \
+					-days 365 \
+					-newkey rsa:2048 \
+					-out /etc/nginx/ssl/site.crt \
+					-keyout /etc/nginx/ssl/site.key \
+					-subj "/C=FR/ST=Paris/0=42 School/OU=jocaille/CN=site"
 
 # Install phpMyAdmin
 RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.zip \
@@ -60,4 +60,5 @@ CMD	service nginx start \
 	&& service php7.3-fpm start \
 	&& service mysql start \
 	&& mysql < init_db.sql \
-	&& rm init_db.sql
+	&& rm init_db.sql \
+	&& tail -f /dev/null
